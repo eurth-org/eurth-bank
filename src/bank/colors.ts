@@ -75,7 +75,9 @@ export function colourName(color: string): string {
   const [h, s, l] = hsl(color);
   if (l > 0.96) return 'white';
   if (l < 0.08) return 'black';
-  if (s < 0.12) return l > 0.75 ? 'pale grey' : l < 0.3 ? 'dark grey' : 'grey';
+  if (l > 0.9 && s < 0.5) return 'white';
+  if (s < 0.25) return l > 0.75 ? 'pale grey' : l < 0.3 ? 'dark grey' : 'grey';
+  if (l > 0.72 && (h < 35 || h >= 340)) return 'pale pink';
   if (h >= 25 && h < 65 && l > 0.78) return s < 0.75 ? 'parchment' : 'cream';
   if (h >= 15 && h < 50 && l < 0.45 && s < 0.7) return l < 0.25 ? 'dark brown' : 'brown';
   if (h >= 35 && h < 60 && l < 0.5) return 'ochre';

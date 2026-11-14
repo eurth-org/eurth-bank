@@ -15,6 +15,10 @@ export type Layout = (typeof layouts)[number];
 export const borders = ['rules', 'stitch', 'wave', 'scallop', 'key', 'guilloche'] as const;
 export type Border = (typeof borders)[number];
 
+/** How the paper looks: flat colour, or one of three generated textures. See render.ts. */
+export const textures = ['plain', 'grain', 'laid', 'aged'] as const;
+export type Texture = (typeof textures)[number];
+
 export const slotKinds = ['none', 'silhouette', 'building', 'landscape', 'arms', 'flag'] as const;
 export type SlotKind = (typeof slotKinds)[number];
 
@@ -88,6 +92,8 @@ export interface Serial {
 export interface NoteDesign {
   layout: Layout;
   border: Border;
+  /** The texture of the paper. */
+  texture: Texture;
   rosette: Rosette;
   front: Slot;
   back: Slot;
@@ -216,6 +222,7 @@ export function defaultDesign(): Design {
     note: {
       layout: 'portrait-left',
       border: 'stitch',
+      texture: 'grain',
       rosette: { ...DEFAULT_ROSETTE },
       front: { kind: 'silhouette', art: 'founder' },
       back: { kind: 'building', art: 'lighthouse' },
@@ -272,6 +279,7 @@ export function cleanDesign(input: unknown): Design {
     note: {
       layout: pick(n.layout, layouts, base.note.layout),
       border: pick(n.border, borders, base.note.border),
+      texture: pick(n.texture, textures, base.note.texture),
       rosette: cleanRosette(n.rosette, base.note.rosette),
       front: cleanSlot(n.front, base.note.front),
       back: cleanSlot(n.back, base.note.back),
