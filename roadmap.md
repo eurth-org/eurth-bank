@@ -6,7 +6,7 @@ Three parts: what comes next, what each release added (newest first), and what's
 
 ## Where to pick up
 
-**14 November 2026.** Phase 1 is under way, with Stijn's go-ahead. Done: steps 1 to 8 (model, colour schemes, ISO 4217 snapshot and fiction-only rules, value in words, guilloche, signatures, serial numbers, our own line art, the drawing of every note with the series sheet, paper textures and description, and saving to the link and to the profile's `bank` section, checked once by hand against @eurth/profile's own checker). Next: step 9, presets and templates. Run `npm install`, `npm run check` and `npm test` first.
+**14 November 2026.** Phase 1 is under way, with Stijn's go-ahead. Done: steps 1 to 9 and 11 (everything in `src/bank/`: the engine, saving, presets, twelve template currencies and the toasts, all tested). Next: step 10, the guide and the glossary in `src/content/`, with sources checked one by one. Run `npm install`, `npm run check` and `npm test` first.
 
 Waiting on others:
 
