@@ -6,7 +6,7 @@ Three parts: what comes next, what each release added (newest first), and what's
 
 ## Where to pick up
 
-**14 November 2026.** Phase 1 is under way, with Stijn's go-ahead. Done: steps 1 and 2 (the model, the colour schemes, the ISO 4217 snapshot and the fiction-only rules, all tested). Next: step 3, the value in words. Run `npm install`, `npm run check` and `npm test` first.
+**14 November 2026.** Phase 1 is under way, with Stijn's go-ahead. Done: steps 1 to 5 (model, colour schemes, ISO 4217 snapshot and fiction-only rules, value in words, guilloche rosettes and borders, signatures, serial numbers, all tested). Next: step 6, our own line art. Run `npm install`, `npm run check` and `npm test` first.
 
 Waiting on others:
 
