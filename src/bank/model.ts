@@ -252,12 +252,13 @@ export function cleanDesign(input: unknown): Design {
   const name = has(c, 'name') ? cleanText(c.name, LIMITS.name) : base.currency.name;
   const signatories = Array.isArray(n.signatories)
     ? n.signatories
-        .slice(0, LIMITS.signatories)
+        .slice(0, 20)
         .map((item) => {
           const p = record(item);
           return { name: cleanText(p.name, LIMITS.person), title: cleanText(p.title, LIMITS.title) };
         })
         .filter((p) => p.name || p.title)
+        .slice(0, LIMITS.signatories)
     : base.note.signatories;
   const serial = record(n.serial);
 

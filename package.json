@@ -13,6 +13,7 @@
     "iso4217": "node tools/update-iso4217.mjs"
   },
   "devDependencies": {
+    "@types/node": "^26.6.6",
     "typescript": "^7.0.2",
     "vitest": "^5.1.0"
   }
