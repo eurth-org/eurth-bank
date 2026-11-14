@@ -6,13 +6,16 @@ Three parts: what comes next, what each release added (newest first), and what's
 
 ## Where to pick up
 
-**14 November 2026.** Phase 1 is under way, with Stijn's go-ahead. Done: steps 1 to 9 and 11 (everything in `src/bank/`: the engine, saving, presets, twelve template currencies and the toasts, all tested). Next: step 10, the guide and the glossary in `src/content/`, with sources checked one by one. Run `npm install`, `npm run check` and `npm test` first.
+**15 November 2026.** Phase 1 is done: the whole engine in `src/bank/`, the guide and glossary in `src/content/`, 222 tests, CI green. @eurth/style 1.0.1 and @eurth/profile 1.0.0 are now released, so Phase 2 has started. Next: step 12, read HANDBOOK.md and copy the starter template. Run `npm install`, `npm run check` and `npm test` first.
 
-Waiting on others:
+Notes for Phase 2, from building Phase 1:
 
-- **@eurth/style 1.0.0** is not released. On GitHub the repository holds only its brief: no HANDBOOK.md, starter template or tag yet. Phase 2 can't start until it is: check `gh release list -R eurth-org/eurth-style`. This plan was written from the handbook rules in that brief; when HANDBOOK.md is out, read it first, and where it differs from this plan, the handbook wins.
-- **The door.** Door 9 and 18 December come from Foundations' unreleased `tools.json` ("Bank: Money with your nation's face on it"). Confirm both when @eurth/style is released.
-- **@eurth/profile 1.0.0** is written but not tagged. Its `bank` section has `currency`, `code`, `issuer` and `denominations` (largest first), plus the shared `link`, `summary` and `updated`. It allows extra keys, so Bank will also write `plural`, `symbol` and `design` (see Phase 1, step 8). Ask Foundations to document those three, since Wiki and Card read the symbol.
+- **Check the profile section with the real checker.** Once @eurth/profile is installed, add a test that runs `bankSection` through `validateProfile`. It passed when tried by hand against the sibling checkout.
+- **Check exports in Safari and Firefox.** The paper textures are SVG filters and the arms and flag are SVG images inside the SVG; both must survive being drawn to a canvas for PNG and WebP. If a browser fails, fall back to plain paper for that export and say so.
+- **Ask Foundations to document `plural`, `symbol` and `design`** in the profile's `bank` section, since Wiki and Card read the symbol.
+- **The door.** Door 9 and 18 December come from `tools.json` in @eurth/style; confirm against the released file.
+- **The guide wants one figure:** a specimen note from the engine with its parts labelled. Draw it with `renderNote`, not by hand.
+- **Looking at a note without the site:** write the SVG from a throwaway test and turn it into a PNG with `qlmanage -t -s 2000 -o . note.svg` (macOS). Filters make that tool slow; use plain paper for big sheets.
 
 Decided here, say if you'd rather not:
 

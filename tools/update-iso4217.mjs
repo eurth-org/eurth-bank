@@ -62,12 +62,12 @@ const text = `/**
  * Do not edit by hand; run \`npm run iso4217\` and commit the result.
  *
  * Source: SIX Financial Information, the maintenance agency for ISO 4217,
- * https://www.six-group.com/en/products-services/financial-information/data-standards.html
+ * https://www.six-group.com/en/products-services/financial-information/market-reference-data/data-standards.html
  * List one (in use) as published on ${published(one)}; list three (withdrawn) as published on ${published(three)}.
  */
 
 export const ISO4217_SOURCE =
-  'https://www.six-group.com/en/products-services/financial-information/data-standards.html';
+  'https://www.six-group.com/en/products-services/financial-information/market-reference-data/data-standards.html';
 
 /** When SIX published each list. */
 export const ISO4217_PUBLISHED = { current: '${published(one)}', historic: '${published(three)}' } as const;

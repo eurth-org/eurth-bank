@@ -3,12 +3,12 @@
  * Do not edit by hand; run `npm run iso4217` and commit the result.
  *
  * Source: SIX Financial Information, the maintenance agency for ISO 4217,
- * https://www.six-group.com/en/products-services/financial-information/data-standards.html
+ * https://www.six-group.com/en/products-services/financial-information/market-reference-data/data-standards.html
  * List one (in use) as published on 2026-09-17; list three (withdrawn) as published on 2026-01-01.
  */
 
 export const ISO4217_SOURCE =
-  'https://www.six-group.com/en/products-services/financial-information/data-standards.html';
+  'https://www.six-group.com/en/products-services/financial-information/market-reference-data/data-standards.html';
 
 /** When SIX published each list. */
 export const ISO4217_PUBLISHED = { current: '2026-09-17', historic: '2026-01-01' } as const;
