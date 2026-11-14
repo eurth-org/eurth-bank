@@ -1,0 +1,19 @@
+{
+  "name": "eurth-bank",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Bank: a free online banknote designer for fictional currencies, by Eurth. For now the engine only; the site follows once @eurth/style is released.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "vitest run",
+    "iso4217": "node tools/update-iso4217.mjs"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  }
+}
