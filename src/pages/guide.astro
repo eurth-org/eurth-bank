@@ -1,0 +1,79 @@
+---
+// The guide: the subject explained well, with sources and the day it was last brought up to
+// date. The text is in src/content/guide.md; the figures are drawn by the designer's own engine.
+import { article, ref } from '@eurth/style/build';
+import Page from '@eurth/style/components/Page.astro';
+import { site } from '../../eurth.config.mjs';
+import source from '../content/guide.md?raw';
+import { callouts } from '../site/anatomy';
+import { renderMarkdown } from '../site/markdown';
+import { picture } from '../site/pictures';
+
+// Links to other websites carry ?ref=<our host>; the shell opens them in a new tab.
+const outbound = (href: string): string => (href.startsWith('https://') && !new URL(href).host.endsWith('eurth.org') ? ref(href, site.host) : href);
+const guide = renderMarkdown(source, outbound);
+const { title = '', description = '', updated: iso = '' } = guide.front;
+const shown = new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const figures = (['front', 'back'] as const).map((side) => ({ side, picture: picture(`anatomy-${side}`), callouts: callouts[side] }));
+---
+
+<Page site={site} {title} {description} crumbs={[{ name: 'Guide', path: '/guide/' }]} jsonld={[article(site, { headline: title, path: '/guide/', description, updated: iso })]}>
+  <article class="eu-prose">
+    <p class="eu-kicker">Guide</p>
+    <h1>{title}</h1>
+    <p class="eu-lead">What every part of a banknote is for, and how a central bank plans a whole series. Read it, then open the <a href="/">designer</a> and print your own.</p>
+
+    {
+      figures.map((figure) => (
+        <figure>
+          <img src={`/notes/${figure.picture.name}.svg`} alt={figure.picture.alt} width={figure.picture.width} height={figure.picture.height} decoding="async" />
+          <figcaption>
+            <p>
+              The {figure.side} of Bank's own specimen, the 100 selun note of the invented Bank of Teland:
+            </p>
+            <ol>
+              {figure.callouts.map((callout) => (
+                <li>
+                  <a href={`#${callout.about}`}>{callout.label}</a>
+                </li>
+              ))}
+            </ol>
+          </figcaption>
+        </figure>
+      ))
+    }
+
+    <Fragment set:html={guide.html} />
+
+    <p class="eu-muted">Last updated <time datetime={iso}>{shown}</time>. Words explained in the <a href="/glossary/">glossary</a>; currencies to start from in the <a href="/templates/">templates</a>.</p>
+  </article>
+</Page>
+
+<style>
+  figure {
+    margin-inline: 0;
+  }
+
+  figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  figcaption {
+    margin-top: var(--space-3);
+    font: var(--type-body-sm);
+  }
+
+  figcaption ol {
+    columns: 2;
+    column-gap: var(--space-8);
+    margin-top: var(--space-2);
+  }
+
+  @media (max-width: 520px) {
+    figcaption ol {
+      columns: 1;
+    }
+  }
+</style>

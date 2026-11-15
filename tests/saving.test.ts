@@ -1,3 +1,4 @@
+import { decodeState, encodeState } from '@eurth/style';
 import { describe, expect, it } from 'vitest';
 import { ISO4217_CURRENT } from '../src/bank/data/iso4217';
 import { LINK_VERSION, MAX_PACKED, SITE, decodeDesign, designLink, designQuery, encodeDesign, readLink, readQuery } from '../src/bank/link';
@@ -48,7 +49,7 @@ describe('a design in its link', () => {
   it('is versioned, and safe to put in an address as it is', () => {
     for (const design of variants()) {
       const packed = encodeDesign(design);
-      expect(packed).toMatch(new RegExp(`^${LINK_VERSION}-[A-Za-z0-9_-]+$`));
+      expect(packed).toMatch(new RegExp(`^${LINK_VERSION}\\.[A-Za-z0-9_-]+$`));
       expect(encodeURIComponent(packed)).toBe(packed);
     }
   });
@@ -61,9 +62,18 @@ describe('a design in its link', () => {
     expect(encodeDesign(fullest()).length).toBeLessThan(MAX_PACKED);
   });
 
+  it('is in the suite\'s own form, so @eurth/style reads it too', () => {
+    for (const design of variants()) {
+      const read = decodeState(encodeDesign(design));
+      expect(read?.version).toBe(LINK_VERSION);
+      expect(Array.isArray(read?.value)).toBe(true);
+      expect(decodeDesign(encodeState(read?.value, LINK_VERSION))).toEqual(design);
+    }
+  });
+
   it('goes in the query string, where a Worker could read it', () => {
     const link = designLink(defaultDesign());
-    expect(link.startsWith('https://bank.eurth.org/?d=1-')).toBe(true);
+    expect(link.startsWith('https://bank.eurth.org/?d=1.')).toBe(true);
     expect(link).not.toContain('#');
     expect(new URL(link).searchParams.get('d')).toBe(encodeDesign(defaultDesign()));
   });
@@ -92,14 +102,14 @@ describe('a design in its link', () => {
 });
 
 describe('a link is someone else\'s input', () => {
-  const pack = (value: unknown): string => `1-${Buffer.from(JSON.stringify(value)).toString('base64url')}`;
+  const pack = (value: unknown): string => `1.${Buffer.from(JSON.stringify(value)).toString('base64url')}`;
 
   it('gives null for anything that is not a design', () => {
-    const junk = ['', '1-', '1', 'abc', '2-abcd', '1-!!!!', '1-%3Cscript%3E', `1-${'A'.repeat(MAX_PACKED)}`, pack('text'), pack(42), pack(null), pack({}), pack([1, 2, 3]), '1-eyJhIjo', null, undefined, 7, {}];
+    const junk = ['', '1.', '1', 'abc', '2.abcd', '1-abcd', '1.!!!!', '1.%3Cscript%3E', `1.${'A'.repeat(MAX_PACKED)}`, pack('text'), pack(42), pack(null), pack({}), pack([1, 2, 3]), '1.eyJhIjo', null, undefined, 7, {}];
     for (const text of junk) expect(decodeDesign(text), String(text).slice(0, 30)).toBe(null);
     expect(readQuery('d=nonsense')).toBe(null);
     expect(readQuery('')).toBe(null);
-    expect(decodeDesign(`1-${Buffer.from([0xff, 0xfe, 0xfd]).toString('base64url')}`)).toBe(null);
+    expect(decodeDesign(`1.${Buffer.from([0xff, 0xfe, 0xfd]).toString('base64url')}`)).toBe(null);
   });
 
   it('never lets a real code through', () => {

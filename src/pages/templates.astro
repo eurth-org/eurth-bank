@@ -1,0 +1,92 @@
+---
+// Templates: twelve invented currencies, each a link into the designer. The links and the
+// pictures are made at build time with the same code the designer uses, so they can't drift apart.
+import Page from '@eurth/style/components/Page.astro';
+import { site } from '../../eurth.config.mjs';
+import { designQuery } from '../bank/link';
+import { defaultDesign } from '../bank/model';
+import { templates } from '../bank/templates';
+import { formatNumeral, listInWords, unitFor } from '../bank/words';
+import { picture } from '../site/pictures';
+
+const start = JSON.stringify(defaultDesign());
+const cards = templates.map((t) => {
+  const values = t.design.series.denominations.map((d) => formatNumeral(d.value));
+  return {
+    ...t,
+    // The design Bank opens with needs no link at all.
+    href: JSON.stringify(t.design) === start ? '/' : `/?${designQuery(t.design)}`,
+    picture: picture(t.id),
+    series: `${values.length} notes: ${listInWords(values)} ${unitFor(2, t.design.currency)}.`,
+  };
+});
+---
+
+<Page
+  site={site}
+  title="Banknote templates"
+  description="Twelve invented currencies to start from, each a full series of banknotes: kingdoms, republics, free cities and one nation in trouble. Open one and make it yours."
+  crumbs={[{ name: 'Templates', path: '/templates/' }]}
+>
+  <div class="eu-stack">
+    <header class="eu-prose">
+      <p class="eu-kicker">Templates</p>
+      <h1>Banknote templates</h1>
+      <p class="eu-lead">
+        Twelve currencies that don't exist, each with its whole series. Open one in the <a href="/">designer</a> and change what you like; the{' '}
+        <a href="/guide/">guide</a> explains what the parts of a note are for.
+      </p>
+    </header>
+    <ul class="gallery">
+      {
+        cards.map((card, i) => (
+          <li>
+            <a class="eu-card" href={card.href}>
+              <span class="frame">
+                <img src={`/notes/${card.picture.name}.svg`} alt={card.picture.alt} width={card.picture.width} height={card.picture.height} loading={i < 3 ? 'eager' : 'lazy'} decoding="async" />
+              </span>
+              <h2>{card.name}</h2>
+              <p>{card.about}</p>
+              <p class="eu-muted">{card.series}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="eu-muted">Every name, bank, code and signature here is invented. No real currency's name, sign or code is used.</p>
+  </div>
+</Page>
+
+<style>
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .gallery .eu-card {
+    height: 100%;
+  }
+
+  /* Every picture gets the same room, so upright notes and long ones line up in the grid. */
+  .frame {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 10;
+  }
+
+  .frame img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .gallery h2 {
+    font: var(--type-heading);
+  }
+</style>

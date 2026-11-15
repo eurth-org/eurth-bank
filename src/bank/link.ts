@@ -1,7 +1,12 @@
 /**
  * A design lives in its link. Everything Bank needs to draw the series again is packed, compactly
- * and with a version number, into the query string: ?d=1-… A design holds no pictures, only names,
+ * and with a version number, into the query string: ?d=1.… A design holds no pictures, only names,
  * numbers and choices, so it always fits. Nothing is kept on a server or in the browser.
+ *
+ * The form is the suite's own (@eurth/style's encodeState: the version, a full stop, compact JSON
+ * in base64url), written out here so the engine needs nothing but itself. When the shape of a
+ * design changes, raise the version and keep reading the old ones: a link made today must open
+ * next year.
  *
  * Whatever arrives in a link is someone else's input: it goes through `cleanDesign`, which checks
  * and clamps all of it, and a real ISO 4217 code never comes out the other side.
@@ -97,15 +102,15 @@ function fromBase64Url(text: string): string | null {
   }
 }
 
-/** A design packed for a link: "1-" and then letters, digits, hyphens and underscores only. */
+/** A design packed for a link: "1." and then letters, digits, hyphens and underscores only. */
 export function encodeDesign(design: Design): string {
-  return `${LINK_VERSION}-${toBase64Url(JSON.stringify(pack(cleanDesign(design))))}`;
+  return `${LINK_VERSION}.${toBase64Url(JSON.stringify(pack(cleanDesign(design))))}`;
 }
 
 /** The design in a packed text, checked and clamped, or null when the text isn't one of ours. */
 export function decodeDesign(packed: unknown): Design | null {
   if (typeof packed !== 'string' || packed.length > MAX_PACKED) return null;
-  const match = /^(\d{1,3})-([A-Za-z0-9_-]+)$/.exec(packed);
+  const match = /^(\d{1,4})\.([A-Za-z0-9_-]+)$/.exec(packed);
   if (!match || Number(match[1]) !== LINK_VERSION) return null;
   const json = fromBase64Url(match[2] as string);
   if (json === null) return null;
@@ -131,7 +136,7 @@ export function designLink(design: Design, view?: View, site = SITE): string {
   return `${site}?${designQuery(design, view)}`;
 }
 
-/** Reads a query string ("?d=1-…&n=100&s=back", with or without the question mark). */
+/** Reads a query string ("?d=1.…&n=100&s=back", with or without the question mark). */
 export function readQuery(query: string): { design: Design; view: View } | null {
   if (typeof query !== 'string' || query.length > MAX_PACKED + 200) return null;
   const params = new URLSearchParams(query.replace(/^[^?]*\?/, '').replace(/#.*$/, ''));
