@@ -25,6 +25,7 @@ Decided along the way; say if you'd rather not:
 
 - **Look at it in Safari and Firefox,** on a phone too. The paper textures are SVG filters and the arms and flag are SVG images inside the SVG; both must survive being drawn to a canvas for PNG and WebP. Chrome does it. If a browser doesn't, fall back to plain paper for that export and say so in a toast.
 - **Load a real profile by hand** (`node_modules/@eurth/profile/examples/calderwyn.eurth.json`): the currency arrives, the arms and flag show in the slots, and Save profile writes only the `bank` section. The tests cover all of it; nobody has clicked it yet.
+- **Ask Foundations to give `eu-select` its own arrow.** The browser's arrow sits against the rounded edge. Bank wraps its three dropdowns to draw one inside (`.picker` in `Designer.svelte`); the fix belongs in @eurth/style, and then the wrapper can go.
 - **Ask Foundations to document `plural`, `symbol` and `design`** in the profile's `bank` section, since Wiki and Card read the symbol.
 - **Lighthouse:** CI runs it on `main`. Check the first run and fix what it finds; the start page carries one note as a picture inside the page, which is the thing to watch.
 - **The launch:** the workflow is in place (`LAUNCH_AT` is `2026-12-18T00:00:00+01:00`; the run starts at 22:30 UTC on 17 December). If it hasn't started by 22:45 UTC, start it by hand. After the launch, delete `.github/workflows/launch.yml`.
@@ -43,7 +44,7 @@ Decided along the way; say if you'd rather not:
 
 The first version. Not deployed: the site opens on 18 December 2026.
 
-- **The designer:** a currency (name, plural, sign, code, issuer), a series of up to twelve values, and one note design that the whole series follows. Three layouts (portrait left, centred, upright), six borders, four paper textures, a rosette set by six numbers, a portrait slot and a vignette, two signatures, serial numbers and the SPECIMEN overprint. Front, back and the whole series side by side.
+- **The designer:** eight numbered steps on the left and the result on the right, which stays in view while the form scrolls. A currency (name, plural, sign, code, issuer), a series of up to twelve values, and one note design that the whole series follows. Drawings and rosettes are chosen from small pictures. Three layouts (portrait left, centred, upright), six borders, four paper textures, a rosette set by six numbers, a portrait slot and a vignette, two signatures, serial numbers and the SPECIMEN overprint. Front, back and the whole series side by side.
 - **Fiction only:** every real ISO 4217 code, in use or withdrawn, is refused with a kind sentence and a row of free codes to use instead; no uploads; the fine print on every picture; the specimen mark on by default.
 - **Guilloche from numbers:** rosettes and borders are drawn by trigonometry, the same on every device, never traced from anything.
 - **Line art of our own:** six silhouettes, six buildings and four landscapes, or the arms and flag from the nation's profile, placed as images.
